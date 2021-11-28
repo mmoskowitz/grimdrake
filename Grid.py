@@ -371,4 +371,23 @@ class Grid:
 	                self.fillbar(Grid.ACROSS, row, column - 1)
                 if (column < self.width):
 	                self.fillbar(Grid.ACROSS, row, column)
-                        
+
+
+        #Finished grid analysis
+        """Is a space numbered"""
+        def isnumber(self, column, row):
+                for dir in (Grid.ACROSS, Grid.DOWN):
+                        if (self.barbefore(column, row, dir) and not(self.barafter(column, row, dir))):
+                            return True
+                return False
+
+        """gets a list with each number and its location in the grid"""
+        def getnumbers(self):
+                nextnumber = 1
+                numbers = {}
+                for row in range(self.height):
+                        for column in range(self.width):
+                                if (self.isnumber(column, row)):
+                                        numbers[(column, row)] = nextnumber
+                                        nextnumber += 1
+                return numbers

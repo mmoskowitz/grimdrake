@@ -19,6 +19,8 @@ class Filler:
                         self.searchletters = {}
                         self.entries = []
 	                self.searchchoices = {}
+                        self.numbers = grid.getnumbers()
+                        self.entrylist = []
                         
 	        self.dictionary = Dictionary(wordssource)
                 self.full_auto = False
@@ -32,6 +34,8 @@ class Filler:
                 self.searchletters = {}
                 self.entries = []
 	        self.searchchoices = {}
+                self.numbers = grid.getnumbers()
+                self.entrylist = []
                 
 
 	"create lights array"
@@ -284,6 +288,7 @@ class Filler:
 			#alter grid
 			self.insertword(shortkey[0],shortkey[1],shortkey[2],word)
                         self.entries.append(word)
+                        self.entrylist.append((shortkey[2], self.numbers[(shortkey[0], shortkey[1])], word))
 			self.debug (shortkey, word)
                         if (self.is_debug):
 			        self.printgrid()
@@ -294,6 +299,7 @@ class Filler:
                             return True 
                         else:
                             self.entries.remove(word)
+                            self.entrylist.pop()
 		#alter grid back
 		self.insertword(shortkey[0],shortkey[1],shortkey[2],oldword)
                 return False
