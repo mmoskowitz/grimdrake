@@ -30,7 +30,7 @@ class Dictionary:
                 self.add_word(wordline,count)
                 count += 1
                 if (count % 1000 == 0):
-                    print "count: %s" % count
+                    print "Words ingested: %s" % count
 
     def add_word(self, word, index):
         tempwords = self.words
