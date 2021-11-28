@@ -2,6 +2,7 @@
 
 import sys, os, random, copy
 
+"""Class to represent a grid. Spaces are a 2-d grid. Bars are two lists, each of which contains a vector field for the bars in that direction."""
 class Grid:
 
 	#directions
@@ -50,13 +51,17 @@ class Grid:
 	def getdimension(self, dir):
 		return self.dimension[dir]
 
+        """prints out grid to the command line"""
 	def printgrid (self):
 		print '_' + ('__' * self.width)
 	
 		for row in range(0, self.height): 
 			rowstr = '|'
 			for col in range(0,self.width):
-				rowstr += ' '
+                                if (self.isblack(col,row)):
+                                    rowstr += '#'
+                                else:
+				    rowstr += ' '
 				if (self.barafter(col, row, 1)):	
 					rowstr += '|'
 				else:
@@ -74,6 +79,8 @@ class Grid:
 		print '-' + ('--' * self.width)
 
 
+        def isblack (self, column, row):
+                return self.isunch(column, row, Grid.ACROSS) and self.isunch(column, row, Grid.DOWN)
 	def isunch (self, column, row, dir):
 		if (dir):
 			return self.isunchX(row,column,dir)
@@ -344,6 +351,24 @@ class Grid:
 			if (xj != space):
 				self.reversehalfbar(line, dir)
 
+        
+        def fillbar(self, dir, line, space):
+                bar = self.bars[dir][line]
+                bar = bar | (1 << space)
+                self.bars[dir][line] = bar
 
-	
-	
+        def clearbar(self, dir, line, space):
+                self.fillbar(dir, line, space)
+                self.switchbar(dir, line, space)
+
+        """Fills a given space in the grid"""
+        def fillspace(self, column, row):
+	        if (row > 0):
+                        self.fillbar(Grid.DOWN, column, row - 1)
+	        if (row < self.length):
+                        self.fillbar(Grid.DOWN, column, row)
+                if (column > 0):
+	                self.fillbar(Grid.ACROSS, row, column - 1)
+                if (column < self.width):
+	                self.fillbar(Grid.ACROSS, row, column)
+                        

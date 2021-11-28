@@ -87,7 +87,7 @@ class Dictionary:
         return len(self.find_words(searches))
 
     def find_letters(self,searches,index):
-        print ("index: %s" % index)
+        #print ("index: %s" % index)
         wordlist = self.find_words(searches)
         letters = [word[index] for word in wordlist]
         letters.sort()

@@ -5,21 +5,35 @@ from Grid import Grid
 from Dictionary import Dictionary
 
 class Filler:
-	#wordssource = './scowlunder55ordered.txt'
-	wordssource = './scowlunder55-2021-04-07.txt'
+	defaultwordssource = './scowlunder55ordered.txt'
+	#defaultwordssource = './scowlunder55-2021-04-07.txt'
 	#wordssource = './ordered9c.txt'
+        is_debug = False
 	
-        def __init__(self, grid):
-            self.grid = grid
-            self.lights = []
-            self.setup_lights()
-            self.searchsizes = {}
-            self.searchletters = {}
-            self.entries = []
-	    self.searchchoices = {}
-	    self.dictionary = Dictionary(self.wordssource)
-	    self.full_auto = False
-        
+        def __init__(self, grid=None, wordssource=defaultwordssource):
+                if (grid is not None):
+                        self.grid = grid
+                        self.lights = []
+                        self.setup_lights()
+                        self.searchsizes = {}
+                        self.searchletters = {}
+                        self.entries = []
+	                self.searchchoices = {}
+                        
+	        self.dictionary = Dictionary(wordssource)
+                self.full_auto = False
+
+        """Prepare to make use of a grid"""
+        def set_grid(self, grid):
+                self.grid = grid
+                self.lights = []
+                self.setup_lights()
+                self.searchsizes = {}
+                self.searchletters = {}
+                self.entries = []
+	        self.searchchoices = {}
+                
+
 	"create lights array"
         def setup_lights(self):
             for x in range(0, self.grid.width):
@@ -27,6 +41,11 @@ class Filler:
                 for y in range(0, self.grid.height):
                     self.lights[x].append('.')
 
+        "print if debug is true"
+        def debug (self, *str):
+                if (self.is_debug):
+                        print str
+                    
 	"print grid to stdout"
 	def printgrid (self):
 		print '_' + ('__' * self.grid.width)
@@ -175,20 +194,11 @@ class Filler:
 	def findsearchletters(self, search, length, index):
 		dsearch = self.convertsearch(search)
 		return self.dictionary.find_letters(dsearch, index)
-#		command = 'grep ^%s$ %s | sed -e s/^%s// | sed -e s/%s\$//' % (search, self.wordssource, "." * (index), "." * (length - (index + 1)))
-#		command += ' | tr A-Z a-z | grep -v [^a-z] | sort | uniq'
-#		lsource = self.getcommandfile(command)
-#		letterslist = [line[0] for line in lsource]
-#		return ''.join(letterslist)
 		
 
 	def findsearchcount(self, search):
 		dsearch = self.convertsearch(search)
 		return self.dictionary.find_word_count(dsearch)
-#		command = "grep -i ^%s$ %s" % (search, self.wordssource)
-#		command += ' | wc -l'
-#		value = self.getcommandvalue(command)
-#		return int(value)
 		
 
 
@@ -229,7 +239,8 @@ class Filler:
 		searches = self.getsearches()
 		if (len(searches) == 0):
 			#print self if done
-			self.printgrid()
+			if (self.is_debug):
+                                self.printgrid()
 			return True
 		#find shortest search
 		shortkey = self.getshortestsearchkey(searches)
@@ -243,12 +254,14 @@ class Filler:
 			if (self.searchchoices.has_key(wtuple)):
 				word = self.searchchoices[wtuple]
 			else:
-				self.printgrid()
-				print "Available for:"
-				print shortkey
-				print searches[shortkey]
-				print len(wlist)
-				print wlist[0:100]
+				if (self.is_debug):
+                                        self.printgrid()
+                                if (not(self.full_auto)):
+				        print "Available for:"
+				        print shortkey
+				        print searches[shortkey]
+				        print len(wlist)
+				        print wlist[0:100]
 				word = ''
 				if (not(self.full_auto)):
 					word = raw_input ("type word to choose, [RET] for auto, '!' for full auto or '0' to skip: ")
@@ -271,12 +284,13 @@ class Filler:
 			#alter grid
 			self.insertword(shortkey[0],shortkey[1],shortkey[2],word)
                         self.entries.append(word)
-			print (shortkey, word)
-			self.printgrid()
+			self.debug (shortkey, word)
+                        if (self.is_debug):
+			        self.printgrid()
 			#recurse
 			done = self.fill()
                         if (done):
-                            print ('done',shortkey,word)
+                            self.debug ('done',shortkey,word)
                             return True 
                         else:
                             self.entries.remove(word)
