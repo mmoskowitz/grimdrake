@@ -51,8 +51,8 @@ class Filler:
                         print str
                     
 	"print grid to stdout"
-	def printgrid (self):
-		print '_' + ('__' * self.grid.width)
+	def printgrid (self, f = sys.stdout):
+		f.write('_' + ('__' * self.grid.width) + "\n")
 	
 		for row in range(0, self.grid.height): 
 			rowstr = '|'
@@ -66,7 +66,8 @@ class Filler:
 					rowstr += '|'
 				else:
 					rowstr += ' '
-			print rowstr
+                        rowstr += "\n"
+			f.write(rowstr)
 			if (row < self.grid.height - 1):
 				interrowstr = '+'
 				for col in range(0, self.grid.width):	
@@ -74,9 +75,10 @@ class Filler:
 						interrowstr += '-+'	
 					else:
 						interrowstr += ' +'
-				print interrowstr
+                                interrowstr += "\n"
+				f.write(interrowstr)
 		
-		print '-' + ('--' * self.grid.width)
+		f.write('-' + ('--' * self.grid.width) + "\n")
 
 	"add a word to the grid"
 	def insertword(self, column,row,dir, word):
