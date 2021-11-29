@@ -39,6 +39,9 @@ class TestGridFunctions(unittest.TestCase):
         self.assertEqual(self.dict.find_word_count(('a','.','p','l','e')), 2)
         self.assertEqual(self.dict.find_letters(('a','.','bsp','l','e'),1), 'imp')
         self.assertEqual(self.filler.convertsearch("a.[bsp]le"),['a','.','bsp','l','e'])
+        #wordlist = self.dict.find_words(('u', 'p', 'l', '.', '.', '.', 'c', '.', '.'))
+        wordlist = self.dict.find_words(('u', 'p', 'l', '.', '.', '.', 'x', '.', '.'))
+        self.assertEqual(wordlist, [])
 
 if __name__ == '__main__':
     unittest.main()

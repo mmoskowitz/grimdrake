@@ -46,6 +46,7 @@ class Dictionary:
             elif (letter in "'"): #skippable
                 continue
             else: #non-letter
+                print letter, "not recognized at index ", index
                 break
                 
     def find_words(self, searches, sources=None):
@@ -53,18 +54,24 @@ class Dictionary:
         #sequence of strings: 
         # ('a','p','p','l','e') or
         # ('a','.','birs','l','e')
+
+        #sources are the places to look for the rest of the word
         if (not(sources)):
             sources = (self.words,)
-        #add to newsources
+        #add matching letters' dicts to newsources
         if (len(searches) > 0):
             newsources = []
+            #search is the next letter we're searching for
             search = searches[0]
             for source in sources:
                 for letter in source:
                     if (letter in self.LETTERS and (letter in search or search == '.')):
                         newsources.append(source[letter])
-            #call find_words
-            return self.find_words(searches[1:len(searches)], newsources)
+            if (len(newsources) > 0):
+                #RECURSE: call find_words
+                return self.find_words(searches[1:len(searches)], newsources)
+            else:
+                return []
         else:
             wordlist = {}
             for source in sources:
@@ -89,7 +96,14 @@ class Dictionary:
     def find_letters(self,searches,index):
         #print ("index: %s" % index)
         wordlist = self.find_words(searches)
-        letters = [word[index] for word in wordlist]
+        try:
+            letters = [word[index] for word in wordlist] # if len(word) > index]
+        except IndexError:
+            print "Index Error!"
+            print "index", index
+            print "words", wordlist
+            print "searches", searches
+            sys.exit()
         letters.sort()
         letterstring = ''.join(letters)
         letterstring = re.sub(r'(.)\1+', r'\1', letterstring)
