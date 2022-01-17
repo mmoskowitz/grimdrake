@@ -9,6 +9,7 @@ class Filler:
 	#defaultwordssource = './scowlunder55-2021-04-07.txt'
 	#wordssource = './ordered9c.txt'
         is_debug = False
+        filters = []
 	
         def __init__(self, grid=None, wordssource=defaultwordssource):
                 if (grid is not None):
@@ -106,10 +107,10 @@ class Filler:
 				tc += 1
 			else:
 				tr += 1
+                #print search
 		return search
 
 	def getsearchletter(self, column, row, dir, lookahead):
-                #print (column,row)
 		ch = self.lights[column][row] 
 		if (not(ch in ('.'))):
 			return ch
@@ -152,11 +153,11 @@ class Filler:
 		searches = {}
 		for x in range(0,self.grid.width):
 			for y in range(0,self.grid.height):
-				search = self.getsearch(x,y,1,1)
-				if ('.' in search):
+				search = self.getsearch(x,y,True,1)
+				if ('.' in search or '[' in search):
 					searches[(x,y,1)] = search
-				search = self.getsearch(x,y,0,1)
-				if ('.' in search):
+				search = self.getsearch(x,y,False,1)
+				if ('.' in search or '[' in search):
 					searches[(x,y,0)] = search
 		return searches
 
@@ -212,7 +213,10 @@ class Filler:
 		if ('[]' in search):
 			return []
 		dsearch = self.convertsearch(search)
-		return self.dictionary.find_words(dsearch)
+                words = self.dictionary.find_words(dsearch)
+                for filter in self.filters:
+                        words = filter.filter_words(words, self)
+		return words
 #		command = "grep -i ^%s$ %s" % (search, self.wordssource)
 #		command += ' | tr A-Z a-z | grep -v [^a-z]'
 #		list = self.getcommandlist(command)
@@ -243,10 +247,16 @@ class Filler:
 	def fill(self):
 		#gather list of searches
 		searches = self.getsearches()
+                if (self.is_debug):
+                        print len(searches)
+                        print self.lights
 		if (len(searches) == 0):
 			#print self if done
 			if (self.is_debug):
                                 self.printgrid()
+                        for filter in self.filters:
+                                if (not filter.filter_grid(self)):
+                                    return False
 			return True
 		#find shortest search
 		shortkey = self.getshortestsearchkey(searches)
