@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from .Grid import Grid
-from .Puzzle import Puzzle
+from Grid import Grid
+from Puzzle import Puzzle
 import sys
 import copy
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import copy
-from .Grid import Grid
+from Grid import Grid
 
 
 class Gridder:

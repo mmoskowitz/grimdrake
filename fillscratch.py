@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from .Filler import Filler
-from .Grid import Grid
+from Filler import Filler
+from Grid import Grid
 import math
 
 grid = Grid(15, 15, None, None)
