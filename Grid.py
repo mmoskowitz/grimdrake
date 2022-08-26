@@ -203,7 +203,7 @@ class Grid:
     def randomizegrid(self):
         for dir in (Grid.ACROSS, Grid.DOWN):
             lines = self.dimension[not (dir)]
-            mid = (lines - 1) / 2
+            mid = (lines - 1) // 2
             for x in range(0, mid):
                 self.randomizebar(x, dir)
             for x in range(mid, lines):
@@ -292,14 +292,14 @@ class Grid:
         # get length
         tl = self.dimension[dir] - 1
         # get bars
-        bars = random.getrandbits(tl / 2) & random.getrandbits(tl / 2)
+        bars = random.getrandbits(tl // 2) & random.getrandbits(tl // 2)
         # set
         self.bars[dir][index] = bars
 
     def reversehalfbar(self, index, dir):
         tl = self.dimension[dir] - 1
         bars = self.bars[dir][index]
-        bars = bars & 2 ** (tl / 2) - 1
+        bars = bars & 2 ** (tl // 2) - 1
         bars = bars | self.reverse_line(bars, tl)
         # set
         self.bars[dir][index] = bars
