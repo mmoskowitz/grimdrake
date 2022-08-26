@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from tkinter import *
 from Puzzle import Puzzle
 from Grid import Grid
