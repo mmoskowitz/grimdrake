@@ -291,7 +291,7 @@ class Filler:
                     print(word)
                     word = ""
                 if not (word):
-                    word = random.choice(wlist[0 : len(wlist) / 4 + 1])
+                    word = random.choice(wlist[0 : len(wlist) // 4 + 1])
                 # cache choice
                 if word in wlist:
                     self.searchchoices[wtuple] = word
