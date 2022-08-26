@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import sys, os, random, copy
-from .Grid import Grid
-from .Dictionary import Dictionary
+from Grid import Grid
+from Dictionary import Dictionary
 
 
 class Filler:

@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 import copy
-from .Grid import Grid
-from .Gridder import Gridder
-from .Filler import Filler
+from Grid import Grid
+from Gridder import Gridder
+from Filler import Filler
 
 
 class Puzzle:

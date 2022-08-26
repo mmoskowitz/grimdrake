@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-from .Dictionary import Dictionary
-from .Filler import Filler
-from .Grid import Grid
+from Dictionary import Dictionary
+from Filler import Filler
+from Grid import Grid
 import copy
 import unittest
 

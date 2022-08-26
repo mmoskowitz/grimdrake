@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import sys
-from .Puzzle import Puzzle
-from .Gui import Gui
+from Puzzle import Puzzle
+from Gui import Gui
 
 width = int(sys.argv[1])
 height = int(sys.argv[2])
